@@ -1,12 +1,11 @@
 "use client";
 
 import React from 'react';
-import { AppBar, Button, MenuList, MenuListItem, Separator, styleReset } from 'react95';
+import { AppBar, Button, styleReset } from 'react95';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import Image from 'next/image';
 
-import original from 'react95/dist/themes/original';
 import tokyoDark from 'react95/dist/themes/tokyoDark';
-
 
 const GlobalStyles = createGlobalStyle`
   ${styleReset}
@@ -24,10 +23,10 @@ const GlobalStyles = createGlobalStyle`
 
   body {
     font-family: 'ms_sans_serif';
-    background-image: url('/images/background.jpg');
-    background-size: cover;        /* fills screen */
-    background-position: center;   /* centers image */
-    background-repeat: no-repeat;  /* no tiling */
+    background-color: rgb(3,129,128);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     height: 100vh;
   }
 `;
@@ -36,8 +35,20 @@ export default function App() {
   return (
     <ThemeProvider theme={tokyoDark}>
       <GlobalStyles />
-      <AppBar>
-        <Button primary size='sm' style={{ width: '100px' }}>Start</Button>
+      <AppBar style={{ padding: '1px' }}>
+        <Button
+          variant="default"
+          size="sm"
+          style={{ width: '100px', margin: '2px' }}
+        >
+          <img
+    src="/images/windows95.png"
+    alt="start"
+    width={32}
+    height={32}
+  />
+          Start
+        </Button>
       </AppBar>
     </ThemeProvider>
   );
