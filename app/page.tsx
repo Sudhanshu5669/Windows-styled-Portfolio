@@ -31,47 +31,59 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
+// ... keep your imports and GlobalStyles the same
+
 export default function App() {
   return (
     <ThemeProvider theme={tokyoDark}>
       <GlobalStyles />
-      <AppBar style={{
-    padding: '1px',
-    display: 'flex',
-    flexDirection: 'row',
-  }}>
+      <AppBar 
+        style={{
+          // --- Add these three lines ---
+          position: 'fixed',
+          top: 'auto', // Overrides the default 'top: 0' in some AppBar themes
+          bottom: 0,
+          left: 0,
+          // ----------------------------
+          padding: '1px',
+          display: 'flex',
+          flexDirection: 'row',
+          width: '100%', // Ensure it stretches across the screen
+        }}
+      >
         <Button
           variant="default"
-    size="sm"
-    style={{
-      width: '100px',
-      margin: '2px',
-      display: 'flex',
-      gap: '6px'
-    }}
+          size="sm"
+          style={{
+            width: '100px',
+            margin: '2px',
+            display: 'flex',
+            gap: '6px'
+          }}
         >
           <img
-    src="/images/windows95.png"
-    alt="start"
-    width={32}
-    height={32}
-  />
+            src="/images/windows95.png"
+            alt="start"
+            width={32}
+            height={32}
+          />
           Start
         </Button>
 
         <div style={{ marginLeft: 'auto' }} />
 
-  <Button
-    variant="flat"
-    size="sm"
-    style={{ width: '100px',
-      margin: '2px',
-      display: 'flex',
-      paddingTop: '2px'
-      }}
-  >
-    7:00 PM
-  </Button>
+        <Button
+          variant="flat"
+          size="sm"
+          style={{ 
+            width: '100px',
+            margin: '2px',
+            display: 'flex',
+            paddingTop: '2px'
+          }}
+        >
+          7:00 PM
+        </Button>
       </AppBar>
     </ThemeProvider>
   );
