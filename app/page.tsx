@@ -6,6 +6,7 @@ import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import Image from 'next/image';
 
 import tokyoDark from 'react95/dist/themes/tokyoDark';
+import AppIcon from '@/src/Components/AppIcon/AppIcon';
 
 const GlobalStyles = createGlobalStyle`
   ${styleReset}
@@ -37,18 +38,20 @@ export default function App() {
   return (
     <ThemeProvider theme={tokyoDark}>
       <GlobalStyles />
+
+<AppIcon title='resume.pdf' path='images/text.png'></AppIcon>
+
       <AppBar 
         style={{
-          // --- Add these three lines ---
           position: 'fixed',
-          top: 'auto', // Overrides the default 'top: 0' in some AppBar themes
+          top: 'auto',
           bottom: 0,
           left: 0,
           // ----------------------------
           padding: '1px',
           display: 'flex',
           flexDirection: 'row',
-          width: '100%', // Ensure it stretches across the screen
+          width: '100%',
         }}
       >
         <Button
