@@ -8,17 +8,11 @@ interface AppIconProps {
   path: string;
 }
 
-const AppIcon = ({ title, path }: AppIconProps) => {
-  // 2. Create a ref
+// Inside AppIcon.tsx
+const AppIcon = ({ title, path, onDoubleClick }: AppIconProps & { onDoubleClick?: () => void }) => {
   const nodeRef = useRef(null);
-
   return (
-    <Draggable
-      nodeRef={nodeRef} // 3. Pass the ref to Draggable
-      bounds="parent"
-      grid={[4, 4]}
-    >
-      {/* 4. Attach the ref to the outer div */}
+    <Draggable nodeRef={nodeRef}>
       <div 
         ref={nodeRef} 
         className="container" 
@@ -30,13 +24,7 @@ const AppIcon = ({ title, path }: AppIconProps) => {
           cursor: 'pointer' 
         }}
       >
-        <img
-          src={path}
-          alt={title}
-          width={32}
-          height={32}
-          draggable={false} // Prevent default browser image dragging
-        />
+        <img src={path} alt={title} width={32} height={32} draggable={false} />
         <span style={{ 
           fontSize: '12px', 
           marginTop: '4px', 

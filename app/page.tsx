@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { AppBar, Button, styleReset, Window } from 'react95';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import Image from 'next/image';
@@ -38,23 +38,33 @@ const GlobalStyles = createGlobalStyle`
 // ... keep your imports and GlobalStyles the same
 
 export default function App() {
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
+
+  const toggleResume = () => setIsResumeOpen(!isResumeOpen);
+  const closeResume = () => setIsResumeOpen(false);
   return (
     <ThemeProvider theme={tokyoDark}>
       <GlobalStyles />
 
-<AppIcon title='resume.pdf' path='images/text.png'></AppIcon>
+<div onDoubleClick={toggleResume} style={{ display: 'inline-block' }}>
+        <AppIcon title='resume.pdf' path='/images/text.png' />
+      </div>
 
-  <WindowFrame 
-  title="resume.exe" 
-  pdfPath="/files/resume.pdf" // This points to public/resume.pdf
->
-  <iframe
-    src="/files/resume.pdf#toolbar=0"
-    width="100%"
-    height="100%"
-    style={{ border: 'none', height: '1000px' }} // Give it height to scroll
-  />
-</WindowFrame>
+      {/* 4. Only show WindowFrame if isResumeOpen is true */}
+      {isResumeOpen && (
+        <WindowFrame 
+          title="resume.exe" 
+          pdfPath="/files/resume.pdf"
+          onClose={closeResume} // 5. Pass the close function
+        >
+          <iframe
+            src="/files/resume.pdf#toolbar=0"
+            width="100%"
+            height="100%"
+            style={{ border: 'none', height: '1000px' }} 
+          />
+        </WindowFrame>
+      )}
 
 
       <AppBar 
