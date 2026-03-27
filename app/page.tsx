@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { AppBar, Button, styleReset, Window } from 'react95';
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import Image from 'next/image';
 
 import original from 'react95/dist/themes/original';
@@ -35,6 +35,23 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
+const Desktop = styled.div`
+  display: grid;
+  /* Adjust 100px to fit your AppIcon size preference */
+  grid-template-columns: repeat(auto-fill, 100px);
+  grid-template-rows: repeat(auto-fill, 100px);
+  
+  /* The "Secret Sauce": stacks items top-to-bottom first */
+  grid-auto-flow: column; 
+  
+  gap: 10px;
+  padding: 20px;
+  
+  /* Ensure it doesn't go behind the fixed AppBar */
+  height: calc(100vh - 45px); 
+  width: 100vw;
+`;
+
 // ... keep your imports and GlobalStyles the same
 
 export default function App() {
@@ -45,10 +62,19 @@ export default function App() {
   return (
     <ThemeProvider theme={tokyoDark}>
       <GlobalStyles />
+<Desktop>
+        {/* ICONS GO HERE */}
+        <AppIcon 
+          title='resume.pdf' 
+          path='/images/text.png' 
+          onDoubleClick={toggleResume} 
+        />
+        
+        {/* You can add more icons easily now; they will auto-align */}
+        <AppIcon title='Projects' path='/images/projects.png' />
+        <AppIcon title='Network' path='/images/network.png' />
+      </Desktop>
 
-<div onDoubleClick={toggleResume} style={{ display: 'inline-block' }}>
-        <AppIcon title='resume.pdf' path='/images/text.png' />
-      </div>
 
       {/* 4. Only show WindowFrame if isResumeOpen is true */}
       {isResumeOpen && (
