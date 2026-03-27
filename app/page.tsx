@@ -1,12 +1,15 @@
 "use client";
 
 import React from 'react';
-import { AppBar, Button, styleReset } from 'react95';
+import { AppBar, Button, styleReset, Window } from 'react95';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import Image from 'next/image';
 
+import original from 'react95/dist/themes/original';
 import tokyoDark from 'react95/dist/themes/tokyoDark';
 import AppIcon from '@/src/Components/AppIcon/AppIcon';
+import Draggable from 'react-draggable';
+import WindowFrame from '@/src/Components/WindowFrame/WindowFrame';
 
 const GlobalStyles = createGlobalStyle`
   ${styleReset}
@@ -40,6 +43,22 @@ export default function App() {
       <GlobalStyles />
 
 <AppIcon title='resume.pdf' path='images/text.png'></AppIcon>
+
+  <WindowFrame title="react95.exe">
+  <div style={{ height: '500px', width: '100%', overflow: 'hidden' }}>
+    <iframe
+      src="/files/resume.pdf#toolbar=0&navpanes=0"
+      width="100%"
+      height="100%"
+      style={{ border: 'none' }}
+    >
+      <p>It looks like your browser doesn't support PDFs. 
+         <a href="/files/resume.pdf">Download it here.</a>
+      </p>
+    </iframe>
+  </div>
+</WindowFrame>
+
 
       <AppBar 
         style={{
