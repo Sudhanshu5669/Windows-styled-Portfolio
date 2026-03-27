@@ -1,20 +1,42 @@
 "use client";
 
 import React, { useRef } from 'react';
-import { Button, Frame, Toolbar, Window, WindowContent, WindowHeader } from 'react95';
+import { Button, Toolbar, Window, WindowContent, WindowHeader } from 'react95';
 import styled from 'styled-components';
 import Draggable from 'react-draggable';
 
+// 1. ALWAYS DEFINE STYLED COMPONENTS AT THE TOP
 const StyledWindow = styled(Window)`
   width: 400px;
-  min-height: 200px;
+  height: 500px;
   position: absolute;
+  display: flex;
+  flex-direction: column;
 
   .window-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-weight: bold;
+    cursor: grab;
+  }
+
+  .window-content {
+    flex: 1;
+    padding: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    
+    /* HIDE SCROLLBARS */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .content-padding {
+    padding: 1.5rem;
   }
 
   .close-icon {
@@ -31,49 +53,62 @@ const StyledWindow = styled(Window)`
     &:before { height: 100%; width: 3px; left: 50%; transform: translateX(-50%); }
     &:after { height: 3px; width: 100%; left: 0px; top: 50%; transform: translateY(-50%); }
   }
-
-  .footer {
-    display: block;
-    margin: 0.25rem;
-    height: 31px;
-    line-height: 31px;
-    padding-left: 0.25rem;
-  }
 `;
 
 interface WindowFrameProps {
   title: string;
   children: React.ReactNode;
-  footerText?: string;
   onClose?: () => void;
+  pdfPath?: string; 
 }
 
-const WindowFrame = ({ title, children, footerText, onClose }: WindowFrameProps) => {
+// 2. NOW DEFINE THE MAIN COMPONENT
+const WindowFrame = ({ title, children, onClose, pdfPath }: WindowFrameProps) => {
   const nodeRef = useRef(null);
+
+  const handleSave = () => {
+    if (!pdfPath) return;
+
+    const link = document.createElement('a');
+    link.href = pdfPath;
+    link.download = `${title.split('.')[0]}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <Draggable nodeRef={nodeRef} handle=".window-header">
-      <StyledWindow ref={nodeRef} resizable>
-        {/* 1. The Blue Title Bar */}
-        <WindowHeader className='window-header'>
-          <span>{title}</span>
-          <Button onClick={onClose}>
-            <span className='close-icon' />
-          </Button>
-        </WindowHeader>
+      <div ref={nodeRef} style={{ position: 'absolute' }}>
+        {/* StyledWindow is now defined above, so this will work */}
+        <StyledWindow>
+          <WindowHeader className='window-header'>
+            <span>{title}</span>
+            <Button onClick={onClose}>
+              <span className='close-icon' />
+            </Button>
+          </WindowHeader>
 
-        {/* 2. The Menu Bar */}
-        <Toolbar>
-          <Button variant='menu' size='sm'>File</Button>
-          <Button variant='menu' size='sm'>Edit</Button>
-          <Button variant='menu' size='sm' disabled>Save</Button>
-        </Toolbar>
+          <Toolbar>
+            <Button variant='menu' size='sm'>File</Button>
+            <Button variant='menu' size='sm'>Edit</Button>
+            <Button 
+              variant='menu' 
+              size='sm' 
+              onClick={handleSave}
+              disabled={!pdfPath}
+            >
+              Save
+            </Button>
+          </Toolbar>
 
-        {/* 3. The Main Content Area */}
-        <WindowContent style={{ padding: '1.5rem' }}>
-          {children}
-        </WindowContent>
-      </StyledWindow>
+          <WindowContent className="window-content">
+            <div className="content-padding">
+              {children}
+            </div>
+          </WindowContent>
+        </StyledWindow>
+      </div>
     </Draggable>
   );
 };

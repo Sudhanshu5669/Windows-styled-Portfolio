@@ -44,19 +44,16 @@ export default function App() {
 
 <AppIcon title='resume.pdf' path='images/text.png'></AppIcon>
 
-  <WindowFrame title="react95.exe">
-  <div style={{ height: '500px', width: '100%', overflow: 'hidden' }}>
-    <iframe
-      src="/files/resume.pdf#toolbar=0&navpanes=0"
-      width="100%"
-      height="100%"
-      style={{ border: 'none' }}
-    >
-      <p>It looks like your browser doesn't support PDFs. 
-         <a href="/files/resume.pdf">Download it here.</a>
-      </p>
-    </iframe>
-  </div>
+  <WindowFrame 
+  title="resume.exe" 
+  pdfPath="/files/resume.pdf" // This points to public/resume.pdf
+>
+  <iframe
+    src="/files/resume.pdf#toolbar=0"
+    width="100%"
+    height="100%"
+    style={{ border: 'none', height: '1000px' }} // Give it height to scroll
+  />
 </WindowFrame>
 
 
