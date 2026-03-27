@@ -35,11 +35,20 @@ export default function App() {
   return (
     <ThemeProvider theme={tokyoDark}>
       <GlobalStyles />
-      <AppBar style={{ padding: '1px' }}>
+      <AppBar style={{
+    padding: '1px',
+    display: 'flex',
+    flexDirection: 'row',
+  }}>
         <Button
           variant="default"
-          size="sm"
-          style={{ width: '100px', margin: '2px' }}
+    size="sm"
+    style={{
+      width: '100px',
+      margin: '2px',
+      display: 'flex',
+      gap: '6px'
+    }}
         >
           <img
     src="/images/windows95.png"
@@ -49,6 +58,20 @@ export default function App() {
   />
           Start
         </Button>
+
+        <div style={{ marginLeft: 'auto' }} />
+
+  <Button
+    variant="flat"
+    size="sm"
+    style={{ width: '100px',
+      margin: '2px',
+      display: 'flex',
+      paddingTop: '2px'
+      }}
+  >
+    7:00 PM
+  </Button>
       </AppBar>
     </ThemeProvider>
   );
