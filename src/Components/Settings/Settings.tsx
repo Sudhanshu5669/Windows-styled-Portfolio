@@ -82,9 +82,6 @@ export default function Settings({
       }
     };
     fetchWallpapers();
-    wallpapers.map((wp)=>{
-        console.log(wp.path);
-    })
     setWallpaper('images/wallpapers/Windows95setup4K.jpg');
   }, []);
 

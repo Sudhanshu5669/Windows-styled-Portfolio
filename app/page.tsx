@@ -42,6 +42,7 @@ import Projects from '@/src/Components/Projects/Projects';
 import Clock from '@/src/Components/Clock/Clock';
 import ClockApp from '@/src/Components/ClockApp/ClockApp';
 import Settings from '@/src/Components/Settings/Settings';
+import Contacts from '@/src/Components/Contacts/Contacts';
 
 const GlobalStyles = createGlobalStyle<{ wallpaper: string }>`
   ${styleReset}
@@ -124,11 +125,13 @@ export default function App() {
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isClockOpen, setIsClockOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(true)
+  const [isContactsOpen, setIsContactsOpen] = useState(false)
 
   const toggleResume = () => setIsResumeOpen(!isResumeOpen);
   const closeResume = () => setIsResumeOpen(false);
   const toggleclock = () => setIsClockOpen(!isClockOpen)
   const toggleSettings = () => setIsSettingsOpen(!isSettingsOpen)
+  const toggleContacts = () => setIsContactsOpen(!isContactsOpen)
 
   const toggleProjects = () => setIsProjectsOpen(!isProjectsOpen);
   return (
@@ -145,6 +148,7 @@ export default function App() {
       <AppIcon title='Projects' path='/images/projects.png' onDoubleClick={toggleProjects} />
       <AppIcon title='Clock' path='/images/clock.png' onDoubleClick={toggleclock} />
       <AppIcon title='Settings' path='/images/settings.png' onDoubleClick={toggleSettings}></AppIcon>
+      <AppIcon title='Contacts' path='/images/contact.png' onDoubleClick={toggleContacts}></AppIcon>
 
 
 
@@ -176,6 +180,9 @@ export default function App() {
         currentWallpaper={wallpaper}
         setWallpaper={setWallpaper}
         ></Settings>}
+        {isContactsOpen && <Contacts onClose={() => setIsContactsOpen(false)}></Contacts>
+
+        }
       <AppBar
         style={{
           position: 'fixed',
