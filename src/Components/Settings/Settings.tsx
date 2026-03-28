@@ -72,11 +72,9 @@ export default function Settings({
       try {
         const response = await fetch('/api/wallpapers');
         const data = await response.json();
-        // Add a "Classic Teal" (no image) option at the start
-        setWallpapers([{ name: 'No wallpaper', path: '' }, ...data]);
+        setWallpapers([{ name: 'No wallpaper', path: 'path/to/windows95setup4k.jpg' }, ...data]);
       } catch (err) {
         console.error("Failed to load wallpapers", err);
-        // Fallback list if the API fails
         setWallpapers([
           { name: 'Classic Teal', path: '' },
           { name: 'Win 95 Setup', path: '/path/to/windows95setup4k.jpg' } // Add your default here
