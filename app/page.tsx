@@ -7,12 +7,16 @@ import Image from 'next/image';
 
 import original from 'react95/dist/themes/original';
 import tokyoDark from 'react95/dist/themes/tokyoDark';
+import matrix from 'react95/dist/themes/matrix';
+import rainyDay from 'react95/dist/themes/rainyDay';
+
 import AppIcon from '@/src/Components/AppIcon/AppIcon';
 import Draggable from 'react-draggable';
 import WindowFrame from '@/src/Components/WindowFrame/WindowFrame';
 import Projects from '@/src/Components/Projects/Projects';
 import Clock from '@/src/Components/Clock/Clock';
 import ClockApp from '@/src/Components/ClockApp/ClockApp';
+import Settings from '@/src/Components/Settings/Settings';
 
 const GlobalStyles = createGlobalStyle`
   ${styleReset}
@@ -66,20 +70,31 @@ const Desktop = styled.div`
   z-index: -1;
 `;
 
+const themeMap: Record<string, any> = {
+  original,
+  tokyoDark,
+  matrix,
+  rainyDay
+};
+
 // ... keep your imports and GlobalStyles the same
 
 export default function App() {
+  const [themeName, setThemeName] = useState('tokyoDark');
+
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isClockOpen, setIsClockOpen] = useState(false)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   const toggleResume = () => setIsResumeOpen(!isResumeOpen);
   const closeResume = () => setIsResumeOpen(false);
   const toggleclock = () => setIsClockOpen(!isClockOpen)
+  const toggleSettings = () => setIsSettingsOpen(!isSettingsOpen)
 
   const toggleProjects = () => setIsProjectsOpen(!isProjectsOpen);
   return (
-    <ThemeProvider theme={tokyoDark}>
+    <ThemeProvider theme={themeMap[themeName]}>
       <GlobalStyles />
         {/* ICONS GO HERE */}
         <AppIcon 
@@ -91,7 +106,7 @@ export default function App() {
         {/* You can add more icons easily now; they will auto-align */}
         <AppIcon title='Projects' path='/images/projects.png' onDoubleClick={toggleProjects} />
         <AppIcon title='Clock' path='/images/clock.png' onDoubleClick={toggleclock}/>
-        <AppIcon title='Settings' path='/images/settings.png'></AppIcon>
+        <AppIcon title='Settings' path='/images/settings.png' onDoubleClick={toggleSettings}></AppIcon>
         
 
 
@@ -115,7 +130,10 @@ export default function App() {
 {isProjectsOpen && <Projects onClose={() => setIsProjectsOpen(false)} />}
 
   {isClockOpen && <ClockApp onClose={()=> setIsClockOpen(false)}></ClockApp>}
-
+{isSettingsOpen && <Settings 
+onClose={()=> setIsSettingsOpen(false)}
+currentTheme={themeName}
+          setTheme={setThemeName}></Settings>}
       <AppBar 
         style={{
           position: 'fixed',
@@ -149,19 +167,6 @@ export default function App() {
         </Button>
 
         <div style={{ marginLeft: 'auto' }} />
-
-        {/* <Button
-          variant="flat"
-          size="sm"
-          style={{ 
-            width: '100px',
-            margin: '2px',
-            display: 'flex',
-            paddingTop: '2px'
-          }}
-        >
-          7:00 PM
-        </Button> */}
         <Clock/>
       </AppBar>
     </ThemeProvider>
