@@ -6,9 +6,34 @@ import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import Image from 'next/image';
 
 import original from 'react95/dist/themes/original';
-import tokyoDark from 'react95/dist/themes/tokyoDark';
+import ash from 'react95/dist/themes/ash';
+import candy from 'react95/dist/themes/candy';
+import cherry from 'react95/dist/themes/cherry';
+import coldGray from 'react95/dist/themes/coldGray';
+import lilac from 'react95/dist/themes/lilac';
+import maple from 'react95/dist/themes/maple';
+import marine from 'react95/dist/themes/marine';
 import matrix from 'react95/dist/themes/matrix';
+import modernDark from 'react95/dist/themes/modernDark';
+import molecule from 'react95/dist/themes/molecule';
+import ninjaTurtles from 'react95/dist/themes/ninjaTurtles';
+import olive from 'react95/dist/themes/olive';
+import plum from 'react95/dist/themes/plum';
+import polarized from 'react95/dist/themes/polarized';
+import powerShell from 'react95/dist/themes/powerShell';
 import rainyDay from 'react95/dist/themes/rainyDay';
+import raspberry from 'react95/dist/themes/raspberry';
+import rose from 'react95/dist/themes/rose';
+import slate from 'react95/dist/themes/slate';
+import solarizedDark from 'react95/dist/themes/solarizedDark';
+import solarizedLight from 'react95/dist/themes/solarizedLight';
+import spruce from 'react95/dist/themes/spruce';
+import tokyoDark from 'react95/dist/themes/tokyoDark';
+import travel from 'react95/dist/themes/travel';
+import vaporTeal from 'react95/dist/themes/vaporTeal';
+import vermillion from 'react95/dist/themes/vermillion';
+import violetDark from 'react95/dist/themes/violetDark';
+import water from 'react95/dist/themes/water';
 
 import AppIcon from '@/src/Components/AppIcon/AppIcon';
 import Draggable from 'react-draggable';
@@ -71,10 +96,12 @@ const Desktop = styled.div`
 `;
 
 const themeMap: Record<string, any> = {
-  original,
-  tokyoDark,
-  matrix,
-  rainyDay
+  original, ash, candy, 
+  cherry, coldGray,
+  lilac, maple, marine, matrix, modernDark, molecule, 
+  ninjaTurtles, olive, plum, polarized, powerShell, rainyDay, 
+  raspberry, rose, slate, solarizedDark, solarizedLight, spruce,
+  tokyoDark, travel, vaporTeal, vermillion, violetDark, water
 };
 
 // ... keep your imports and GlobalStyles the same
@@ -133,7 +160,8 @@ export default function App() {
 {isSettingsOpen && <Settings 
 onClose={()=> setIsSettingsOpen(false)}
 currentTheme={themeName}
-          setTheme={setThemeName}></Settings>}
+          setTheme={setThemeName}
+          theme={themeMap}></Settings>}
       <AppBar 
         style={{
           position: 'fixed',
