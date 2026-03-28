@@ -115,7 +115,6 @@ const themeMap: Record<string, any> = {
   tokyoDark, travel, vaporTeal, vermillion, violetDark, water
 };
 
-// ... keep your imports and GlobalStyles the same
 
 export default function App() {
   const [themeName, setThemeName] = useState('tokyoDark');

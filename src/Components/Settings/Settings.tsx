@@ -76,7 +76,11 @@ export default function Settings({
         setWallpapers([{ name: 'No wallpaper', path: '' }, ...data]);
       } catch (err) {
         console.error("Failed to load wallpapers", err);
-        setWallpapers([{ name: 'Classic Teal', path: '' }]);
+        // Fallback list if the API fails
+        setWallpapers([
+          { name: 'Classic Teal', path: '' },
+          { name: 'Win 95 Setup', path: '/path/to/windows95setup4k.jpg' } // Add your default here
+        ]);
       }
     };
     fetchWallpapers();
