@@ -26,14 +26,21 @@ const GlobalStyles = createGlobalStyle`
     font-weight: bold;
   }
 
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevents scrolling on the whole page */
+    width: 100vw;
+    height: 100vh;
+    position: fixed; /* Extra insurance against mobile rubber-banding */
+  }
+
   body {
     font-family: 'ms_sans_serif';
     background-color: rgb(3,129,128);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 100vh;
+    /* Use a fixed height to ensure it fits the viewport exactly */
     height: 100vh;
+    width: 100vw;
   }
 `;
 
