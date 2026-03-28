@@ -82,6 +82,7 @@ export default function Settings({
       }
     };
     fetchWallpapers();
+    setWallpaper('path/to/windows95setup4k.jpg');
   }, []);
 
   const themeOptions = Object.keys(theme).map(key => ({

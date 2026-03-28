@@ -123,7 +123,7 @@ export default function App() {
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isClockOpen, setIsClockOpen] = useState(false)
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(true)
 
   const toggleResume = () => setIsResumeOpen(!isResumeOpen);
   const closeResume = () => setIsResumeOpen(false);
