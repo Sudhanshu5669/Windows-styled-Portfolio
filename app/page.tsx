@@ -11,6 +11,8 @@ import AppIcon from '@/src/Components/AppIcon/AppIcon';
 import Draggable from 'react-draggable';
 import WindowFrame from '@/src/Components/WindowFrame/WindowFrame';
 import Projects from '@/src/Components/Projects/Projects';
+import Clock from '@/src/Components/Clock/Clock';
+import ClockApp from '@/src/Components/ClockApp/ClockApp';
 
 const GlobalStyles = createGlobalStyle`
   ${styleReset}
@@ -69,9 +71,11 @@ const Desktop = styled.div`
 export default function App() {
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
+  const [isClockOpen, setIsClockOpen] = useState(false)
 
   const toggleResume = () => setIsResumeOpen(!isResumeOpen);
   const closeResume = () => setIsResumeOpen(false);
+  const toggleclock = () => setIsClockOpen(!isClockOpen)
 
   const toggleProjects = () => setIsProjectsOpen(!isProjectsOpen);
   return (
@@ -86,8 +90,9 @@ export default function App() {
         
         {/* You can add more icons easily now; they will auto-align */}
         <AppIcon title='Projects' path='/images/projects.png' onDoubleClick={toggleProjects} />
-        <AppIcon title='Clock' path='/images/clock.png' />
+        <AppIcon title='Clock' path='/images/clock.png' onDoubleClick={toggleclock}/>
         <AppIcon title='Settings' path='/images/settings.png'></AppIcon>
+        
 
 
       {/* 4. Only show WindowFrame if isResumeOpen is true */}
@@ -108,6 +113,8 @@ export default function App() {
 
 
 {isProjectsOpen && <Projects onClose={() => setIsProjectsOpen(false)} />}
+
+  {isClockOpen && <ClockApp onClose={()=> setIsClockOpen(false)}></ClockApp>}
 
       <AppBar 
         style={{
@@ -143,7 +150,7 @@ export default function App() {
 
         <div style={{ marginLeft: 'auto' }} />
 
-        <Button
+        {/* <Button
           variant="flat"
           size="sm"
           style={{ 
@@ -154,7 +161,8 @@ export default function App() {
           }}
         >
           7:00 PM
-        </Button>
+        </Button> */}
+        <Clock/>
       </AppBar>
     </ThemeProvider>
   );
