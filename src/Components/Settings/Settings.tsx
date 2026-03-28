@@ -82,7 +82,7 @@ export default function Settings({
       }
     };
     fetchWallpapers();
-    setWallpaper('images/wallpapers/Windows95setup4K.jpg');
+    // setWallpaper('images/wallpapers/Windows95setup4K.jpg');
   }, []);
 
   const themeOptions = Object.keys(theme).map(key => ({

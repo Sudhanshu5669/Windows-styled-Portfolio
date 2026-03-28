@@ -4,7 +4,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { keyframes } from 'styled-components';
 import { 
   Window, WindowContent, WindowHeader, Button, 
-  Panel, TextInput, List, ListItem, Divider, ScrollView 
+  Panel, TextInput, List, ListItem, Divider, ScrollView, 
+  styleReset
 } from 'react95';
 import Draggable from 'react-draggable';
 import styled from 'styled-components';
@@ -55,7 +56,7 @@ const Viewport = styled(Panel)`
 `;
 
 const MockPage = styled.div`
-  font-family: 'Times New Roman', serif;
+  font-family: 'ms_sans_serif', sans-serif; /* Changed from Times New Roman */
   color: black;
   padding: 8px;
   
@@ -92,7 +93,7 @@ const MarqueeContainer = styled.div`
 const MarqueeText = styled.div`
   display: inline-block;
   animation: ${scrollLeft} 10s linear infinite;
-  font-family: 'Times New Roman', serif;
+  font-family: 'ms_sans_serif', sans-serif; /* Changed from Times New Roman */
 `;
 
 // --- Interfaces ---
@@ -118,6 +119,7 @@ export default function Contacts({ onClose }: InternetProps) {
     { id: 'home', name: 'Homepage', url: 'file://C:/Portfolio/home.html' },
     { id: 'github', name: 'GitHub', url: 'https://github.com/sudhanshu5669' },
     { id: 'linkedin', name: 'LinkedIn', url: 'www.linkedin.com/in/sudhanshu-‎-1788583a7' },
+    { id: 'mail', name: 'Email Me', url: 'mailto:bhartiyasudhanshu5669@gmail.com' }, 
   ];
 
   const navigateTo = (siteId: string, siteUrl: string) => {
@@ -130,7 +132,7 @@ export default function Contacts({ onClose }: InternetProps) {
       const fetchRepos = async () => {
         setIsLoadingRepos(true);
         try {
-          const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN; 
+          const token = process.env.GITHUB_TOKEN; 
 
           const headers: HeadersInit = {
             "Accept": "application/vnd.github.v3+json",
@@ -226,14 +228,14 @@ export default function Contacts({ onClose }: InternetProps) {
                     </MockPage>
                   )}
 
-                  {/* --- DYNAMIC RETRO GITHUB (Restored to original size) --- */}
+                  {/* --- DYNAMIC RETRO GITHUB --- */}
                   {activeSite === 'github' && (
                     <MockPage style={{ background: '#f5f5dc', minHeight: '100%', padding: '16px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
                         <img 
                           src="/images/retrogithub.png" 
                           alt="GitHub" 
-                          width="64" /* Keep GitHub large */
+                          width="64" 
                           style={{ imageRendering: 'pixelated' }} 
                         />
                         <div>
@@ -292,22 +294,20 @@ export default function Contacts({ onClose }: InternetProps) {
                     </MockPage>
                   )}
 
-                  {/* --- RETRO LINKEDIN (Fixed Layout) --- */}
+                  {/* --- RETRO LINKEDIN --- */}
                   {activeSite === 'linkedin' && (
                     <MockPage style={{ background: '#f5f5dc', minHeight: '100%', padding: '16px' }}>
-                      
-                      {/* Flex header mirroring GitHub layout */}
                       <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
                         <img 
-  src="/images/retro-linkedin.png" 
-  alt="LinkedIn Retro Logo" 
-  style={{ 
-    height: '50px',       /* Force the height via CSS */
-    width: 'auto',        /* Keep the aspect ratio normal */
-    objectFit: 'contain', /* Prevent it from stretching weirdly */
-    imageRendering: 'pixelated' 
-  }} 
-/>
+                          src="/images/retro-linkedin.png" 
+                          alt="LinkedIn Retro Logo" 
+                          style={{ 
+                            height: '50px',       
+                            width: 'auto',        
+                            objectFit: 'contain', 
+                            imageRendering: 'pixelated' 
+                          }} 
+                        />
                         <div>
                           <h1>The Professional Network</h1>
                           <p><i>"Connecting professionals since the turn of the century."</i></p>
@@ -333,21 +333,21 @@ export default function Contacts({ onClose }: InternetProps) {
 
                       <h2>Tech Stack & Skills</h2>
                       <table style={{ background: 'transparent', border: 'none' }}>
-  <tbody>
-    <tr>
-      <td style={{ border: 'none', width: '140px', verticalAlign: 'top' }}><b>Languages:</b></td>
-      <td style={{ border: 'none', paddingBottom: '12px' }}>C++, Java, C, JavaScript, TypeScript, Python</td>
-    </tr>
-    <tr>
-      <td style={{ border: 'none', verticalAlign: 'top' }}><b>Core Skills:</b></td>
-      <td style={{ border: 'none', paddingBottom: '12px' }}>Data Structures & Algorithms (DSA), SQL (PostgreSQL, MySQL), Object-Oriented Programming (OOP), RESTful APIs, Git Version Control, Operating Systems, Computer Networks (CN), Database Management Systems (DBMS)</td>
-    </tr>
-    <tr>
-      <td style={{ border: 'none', verticalAlign: 'top' }}><b>Frameworks & Tech:</b></td>
-      <td style={{ border: 'none' }}>LangChain, Node.js, Drizzle ORM, QDrant, Docker, React, React Native, Express, Flutter</td>
-    </tr>
-  </tbody>
-</table>
+                        <tbody>
+                          <tr>
+                            <td style={{ border: 'none', width: '140px', verticalAlign: 'top' }}><b>Languages:</b></td>
+                            <td style={{ border: 'none', paddingBottom: '12px' }}>C++, Java, C, JavaScript, TypeScript, Python</td>
+                          </tr>
+                          <tr>
+                            <td style={{ border: 'none', verticalAlign: 'top' }}><b>Core Skills:</b></td>
+                            <td style={{ border: 'none', paddingBottom: '12px' }}>Data Structures & Algorithms (DSA), SQL (PostgreSQL, MySQL), Object-Oriented Programming (OOP), RESTful APIs, Git Version Control, Operating Systems, Computer Networks (CN), Database Management Systems (DBMS)</td>
+                          </tr>
+                          <tr>
+                            <td style={{ border: 'none', verticalAlign: 'top' }}><b>Frameworks & Tech:</b></td>
+                            <td style={{ border: 'none' }}>LangChain, Node.js, Drizzle ORM, QDrant, Docker, React, React Native, Express, Flutter</td>
+                          </tr>
+                        </tbody>
+                      </table>
 
                       <br/>
                       <Divider />
@@ -359,6 +359,43 @@ export default function Contacts({ onClose }: InternetProps) {
                       </center>
                     </MockPage>
                   )}
+
+                  {/* --- RETRO WEBMAIL --- */}
+                  {activeSite === 'mail' && (
+                    <MockPage style={{ background: '#ffffff', minHeight: '100%', padding: '16px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+                        <span style={{ fontSize: '48px' }}>✉️</span>
+                        <div>
+                          <h1>Electronic Mail</h1>
+                          <p><i>"Fast, reliable, and paperless."</i></p>
+                        </div>
+                      </div>
+
+                      <h2>Contact Me</h2>
+                      <p>Send an electronic mail directly to my inbox! Click the button below to open your Gmail compose window, pre-filled with my address.</p>
+
+                      <div style={{ 
+                        background: '#c0c0c0', 
+                        padding: '16px', 
+                        border: '2px solid', 
+                        borderColor: '#ffffff #808080 #808080 #ffffff', /* 90s inset button look */
+                        marginTop: '24px' 
+                      }}>
+                        <p style={{ margin: '0 0 8px 0' }}><b>To:</b> bhartiyasudhanshu5669@gmail.com</p>
+                        <p style={{ margin: '0 0 16px 0' }}><b>Subject:</b> Portfolio Inquiry</p>
+                        
+                        <center>
+                          <Button 
+                            onClick={() => window.open('https://mail.google.com/mail/?view=cm&fs=1&to=bhartiyasudhanshu5669@gmail.com&su=Portfolio Inquiry', '_blank')} 
+                            size="lg"
+                          >
+                            Compose in Webmail 🚀
+                          </Button>
+                        </center>
+                      </div>
+                    </MockPage>
+                  )}
+
                 </ScrollView>
               </Viewport>
             </ContentSplit>
