@@ -43,7 +43,7 @@ import Clock from '@/src/Components/Clock/Clock';
 import ClockApp from '@/src/Components/ClockApp/ClockApp';
 import Settings from '@/src/Components/Settings/Settings';
 
-const GlobalStyles = createGlobalStyle`
+const GlobalStyles = createGlobalStyle<{ wallpaper: string }>`
   ${styleReset}
 
   @font-face {
@@ -57,21 +57,32 @@ const GlobalStyles = createGlobalStyle`
     font-weight: bold;
   }
 
-  html, body {
+   html, body {
+
     margin: 0;
+
     padding: 0;
+
     overflow: hidden; /* Prevents scrolling on the whole page */
+
     width: 100vw;
+
     height: 100vh;
+
     position: fixed; /* Extra insurance against mobile rubber-banding */
+
   }
 
   body {
     font-family: 'ms_sans_serif';
-    background-color: rgb(3,129,128);
-    /* Use a fixed height to ensure it fits the viewport exactly */
+    /* This makes the wallpaper dynamic */
+    background-image: url(${props => props.wallpaper});
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     height: 100vh;
     width: 100vw;
+    transition: background-image 0.2s ease-in-out;
   }
 `;
 
@@ -96,10 +107,10 @@ const Desktop = styled.div`
 `;
 
 const themeMap: Record<string, any> = {
-  original, ash, candy, 
+  original, ash, candy,
   cherry, coldGray,
-  lilac, maple, marine, matrix, modernDark, molecule, 
-  ninjaTurtles, olive, plum, polarized, powerShell, rainyDay, 
+  lilac, maple, marine, matrix, modernDark, molecule,
+  ninjaTurtles, olive, plum, polarized, powerShell, rainyDay,
   raspberry, rose, slate, solarizedDark, solarizedLight, spruce,
   tokyoDark, travel, vaporTeal, vermillion, violetDark, water
 };
@@ -108,6 +119,7 @@ const themeMap: Record<string, any> = {
 
 export default function App() {
   const [themeName, setThemeName] = useState('tokyoDark');
+  const [wallpaper, setWallpaper] = useState('/images/wallpapers/windows95setup4k.jpg');
 
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
@@ -122,25 +134,25 @@ export default function App() {
   const toggleProjects = () => setIsProjectsOpen(!isProjectsOpen);
   return (
     <ThemeProvider theme={themeMap[themeName]}>
-      <GlobalStyles />
-        {/* ICONS GO HERE */}
-        <AppIcon 
-          title='resume.pdf' 
-          path='/images/text.png' 
-          onDoubleClick={toggleResume} 
-        />
-        
-        {/* You can add more icons easily now; they will auto-align */}
-        <AppIcon title='Projects' path='/images/projects.png' onDoubleClick={toggleProjects} />
-        <AppIcon title='Clock' path='/images/clock.png' onDoubleClick={toggleclock}/>
-        <AppIcon title='Settings' path='/images/settings.png' onDoubleClick={toggleSettings}></AppIcon>
-        
+      <GlobalStyles wallpaper={wallpaper} />
+      {/* ICONS GO HERE */}
+      <AppIcon
+        title='resume.pdf'
+        path='/images/text.png'
+        onDoubleClick={toggleResume}
+      />
+
+      {/* You can add more icons easily now; they will auto-align */}
+      <AppIcon title='Projects' path='/images/projects.png' onDoubleClick={toggleProjects} />
+      <AppIcon title='Clock' path='/images/clock.png' onDoubleClick={toggleclock} />
+      <AppIcon title='Settings' path='/images/settings.png' onDoubleClick={toggleSettings}></AppIcon>
+
 
 
       {/* 4. Only show WindowFrame if isResumeOpen is true */}
       {isResumeOpen && (
-        <WindowFrame 
-          title="resume.exe" 
+        <WindowFrame
+          title="resume.exe"
           pdfPath="/files/resume.pdf"
           onClose={closeResume} // 5. Pass the close function
         >
@@ -148,21 +160,24 @@ export default function App() {
             src="/files/resume.pdf#toolbar=0"
             width="100%"
             height="100%"
-            style={{ border: 'none', height: '1000px' }} 
+            style={{ border: 'none', height: '1000px' }}
           />
         </WindowFrame>
       )}
 
 
-{isProjectsOpen && <Projects onClose={() => setIsProjectsOpen(false)} />}
+      {isProjectsOpen && <Projects onClose={() => setIsProjectsOpen(false)} />}
 
-  {isClockOpen && <ClockApp onClose={()=> setIsClockOpen(false)}></ClockApp>}
-{isSettingsOpen && <Settings 
-onClose={()=> setIsSettingsOpen(false)}
-currentTheme={themeName}
-          setTheme={setThemeName}
-          theme={themeMap}></Settings>}
-      <AppBar 
+      {isClockOpen && <ClockApp onClose={() => setIsClockOpen(false)}></ClockApp>}
+      {isSettingsOpen && <Settings
+        onClose={() => setIsSettingsOpen(false)}
+        currentTheme={themeName}
+        setTheme={setThemeName}
+        theme={themeMap}
+        currentWallpaper={wallpaper}
+        setWallpaper={setWallpaper}
+        ></Settings>}
+      <AppBar
         style={{
           position: 'fixed',
           top: 'auto',
@@ -195,7 +210,7 @@ currentTheme={themeName}
         </Button>
 
         <div style={{ marginLeft: 'auto' }} />
-        <Clock/>
+        <Clock />
       </AppBar>
     </ThemeProvider>
   );

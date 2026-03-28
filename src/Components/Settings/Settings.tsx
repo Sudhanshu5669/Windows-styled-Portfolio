@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Window, WindowContent, WindowHeader, Button, List, ListItem, Select, Panel, Divider } from 'react95';
 import Draggable from 'react-draggable';
 import styled from 'styled-components';
@@ -8,8 +8,8 @@ import styled from 'styled-components';
 const SettingsWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  height: 320px; /* Slightly taller for better proportions */
-  gap: 8px;      /* Gap between sidebar and content */
+  height: 320px;
+  gap: 8px;
 `;
 
 const SidebarContainer = styled(Panel)`
@@ -26,26 +26,66 @@ const ContentContainer = styled(Panel)`
   overflow-y: auto;
 `;
 
+const WallpaperGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+`;
+
+const Thumbnail = styled.div<{ active: boolean; src: string }>`
+  width: 80px;
+  height: 60px;
+  border: 2px solid ${props => (props.active ? '#000080' : '#808080')};
+  background-image: url(${props => props.src});
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  outline: ${props => (props.active ? '2px solid white' : 'none')};
+  background-color: #000;
+  &:hover {
+    border-color: white;
+  }
+`;
+
 interface SettingsProps {
   onClose: () => void;
   currentTheme: string;
   setTheme: (themeName: string) => void;
   theme: Record<string, any>;
+  currentWallpaper: string;
+  setWallpaper: (path: string) => void;
 }
 
-export default function Settings({ onClose, currentTheme, setTheme, theme }: SettingsProps) {
+export default function Settings({ 
+  onClose, currentTheme, setTheme, theme, currentWallpaper, setWallpaper 
+}: SettingsProps) {
   const [activeTab, setActiveTab] = useState('Theme');
+  const [wallpapers, setWallpapers] = useState<{name: string, path: string}[]>([]);
   const nodeRef = useRef(null);
 
   const tabs = ['Theme', 'Wallpapers', 'System', 'Display'];
 
-  /* Inside Settings.tsx */
+  // Automatically fetch wallpapers from the server API
+  useEffect(() => {
+    const fetchWallpapers = async () => {
+      try {
+        const response = await fetch('/api/wallpapers');
+        const data = await response.json();
+        // Add a "Classic Teal" (no image) option at the start
+        setWallpapers([{ name: 'No wallpaper', path: '' }, ...data]);
+      } catch (err) {
+        console.error("Failed to load wallpapers", err);
+        setWallpapers([{ name: 'Classic Teal', path: '' }]);
+      }
+    };
+    fetchWallpapers();
+  }, []);
 
-// Generate options dynamically from the keys of your themeMap
-const themeOptions = Object.keys(theme).map(key => ({
-  value: key,
-  label: key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1') 
-}));
+  const themeOptions = Object.keys(theme).map(key => ({
+    value: key,
+    label: key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1') 
+  }));
 
   return (
     <Draggable nodeRef={nodeRef} handle=".window-header" bounds="parent">
@@ -56,7 +96,7 @@ const themeOptions = Object.keys(theme).map(key => ({
             <span style={{ fontWeight: 'bold' }}>x</span>
           </Button>
         </WindowHeader>
-        <WindowContent style={{ padding: '8px' }}> {/* Reduced padding for a tighter fit */}
+        <WindowContent style={{ padding: '8px' }}>
           <SettingsWrapper>
             
             <SidebarContainer variant="well">
@@ -93,21 +133,39 @@ const themeOptions = Object.keys(theme).map(key => ({
                       width="100%"
                     />
                   </div>
-                  <p style={{ fontSize: '12px', marginTop: '20px', color: '#808080' }}>
-                    Changes will apply immediately to all system windows.
-                  </p>
                 </div>
               )}
 
               {activeTab === 'Wallpapers' && (
                 <div>
-                   <p style={{ fontWeight: 'bold' }}>Desktop Background</p>
-                   <Divider />
-                   <p style={{ marginTop: '10px' }}>Wallpaper settings coming soon...</p>
+                  <p style={{ fontWeight: 'bold' }}>Desktop Background</p>
+                  <Divider />
+                  <p style={{ marginTop: '10px', marginBottom: '10px' }}>Select a wallpaper:</p>
+                  
+                  <WallpaperGrid>
+                    {wallpapers.map((wp) => (
+                      <div key={wp.path} style={{ textAlign: 'center' }}>
+                        <Thumbnail 
+                          src={wp.path} 
+                          active={currentWallpaper === wp.path}
+                          onClick={() => setWallpaper(wp.path)}
+                        />
+                        <p style={{ 
+                          fontSize: '10px', 
+                          marginTop: '4px', 
+                          maxWidth: '80px', 
+                          overflow: 'hidden', 
+                          textOverflow: 'ellipsis', 
+                          whiteSpace: 'nowrap' 
+                        }}>
+                          {wp.name}
+                        </p>
+                      </div>
+                    ))}
+                  </WallpaperGrid>
                 </div>
               )}
             </ContentContainer>
-
           </SettingsWrapper>
         </WindowContent>
       </Window>
