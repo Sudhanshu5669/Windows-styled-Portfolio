@@ -10,6 +10,7 @@ import tokyoDark from 'react95/dist/themes/tokyoDark';
 import AppIcon from '@/src/Components/AppIcon/AppIcon';
 import Draggable from 'react-draggable';
 import WindowFrame from '@/src/Components/WindowFrame/WindowFrame';
+import Projects from '@/src/Components/Projects/Projects';
 
 const GlobalStyles = createGlobalStyle`
   ${styleReset}
@@ -31,6 +32,7 @@ const GlobalStyles = createGlobalStyle`
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    width: 100vh;
     height: 100vh;
   }
 `;
@@ -50,19 +52,24 @@ const Desktop = styled.div`
   /* Ensure it doesn't go behind the fixed AppBar */
   height: calc(100vh - 45px); 
   width: 100vw;
+
+  position: relative;
+  z-index: -1;
 `;
 
 // ... keep your imports and GlobalStyles the same
 
 export default function App() {
   const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [isProjectsOpen, setIsProjectsOpen] = useState(false);
 
   const toggleResume = () => setIsResumeOpen(!isResumeOpen);
   const closeResume = () => setIsResumeOpen(false);
+
+  const toggleProjects = () => setIsProjectsOpen(!isProjectsOpen);
   return (
     <ThemeProvider theme={tokyoDark}>
       <GlobalStyles />
-<Desktop>
         {/* ICONS GO HERE */}
         <AppIcon 
           title='resume.pdf' 
@@ -71,9 +78,9 @@ export default function App() {
         />
         
         {/* You can add more icons easily now; they will auto-align */}
-        <AppIcon title='Projects' path='/images/projects.png' />
-        <AppIcon title='Network' path='/images/network.png' />
-      </Desktop>
+        <AppIcon title='Projects' path='/images/projects.png' onDoubleClick={toggleProjects} />
+        <AppIcon title='Clock' path='/images/clock.png' />
+        <AppIcon title='Settings' path='/images/settings.png'></AppIcon>
 
 
       {/* 4. Only show WindowFrame if isResumeOpen is true */}
@@ -92,6 +99,8 @@ export default function App() {
         </WindowFrame>
       )}
 
+
+{isProjectsOpen && <Projects onClose={() => setIsProjectsOpen(false)} />}
 
       <AppBar 
         style={{
