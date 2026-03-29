@@ -205,7 +205,8 @@ export default function Terminal({ onClose }: TerminalProps) {
     <Draggable nodeRef={nodeRef} handle=".window-header" bounds="parent">
       <Window ref={nodeRef} style={{ width: '700px', position: 'absolute', top: '10%', left: '20%', zIndex: 110 }}>
         <WindowHeader className="window-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span>💻 MS-DOS Prompt</span>
+            <img src={'images/cmd2.png'} width={28} height={28}/>
+          <span>MS-DOS Prompt</span>
           <Button onClick={onClose}><span style={{ fontWeight: 'bold' }}>x</span></Button>
         </WindowHeader>
         

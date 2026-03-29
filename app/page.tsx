@@ -44,6 +44,7 @@ import ClockApp from '@/src/Components/ClockApp/ClockApp';
 import Settings from '@/src/Components/Settings/Settings';
 import Contacts from '@/src/Components/Contacts/Contacts';
 import Minesweeper from '@/src/Components/Minesweeper/Minesweeper';
+import Terminal from '@/src/Components/Terminal/Terminal';
 
 const GlobalStyles = createGlobalStyle<{ wallpaper: string }>`
   ${styleReset}
@@ -128,6 +129,7 @@ export default function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(true)
   const [isContactsOpen, setIsContactsOpen] = useState(false)
   const [isMineOpen, setIsMineOpen] = useState(false)
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false)
 
   const toggleResume = () => setIsResumeOpen(!isResumeOpen);
   const closeResume = () => setIsResumeOpen(false);
@@ -136,6 +138,7 @@ export default function App() {
   const toggleContacts = () => setIsContactsOpen(!isContactsOpen)
   const toggleProjects = () => setIsProjectsOpen(!isProjectsOpen);
   const toggleMine = () => setIsMineOpen(!isMineOpen)
+  const toggleTerminal = () => setIsTerminalOpen(!isTerminalOpen)
   return (
     <ThemeProvider theme={themeMap[themeName]}>
       <GlobalStyles wallpaper={wallpaper} />
@@ -152,6 +155,7 @@ export default function App() {
       <AppIcon title='Settings' path='/images/settings.png' onDoubleClick={toggleSettings}></AppIcon>
       <AppIcon title='Contacts' path='/images/contact.png' onDoubleClick={toggleContacts}></AppIcon>
       <AppIcon title='Minesweeper' path='images/minesweeper.svg' onDoubleClick={toggleMine}></AppIcon>
+      <AppIcon title='cmd' path='images/cmd2.png' onDoubleClick={toggleTerminal}></AppIcon>
 
 
 
@@ -187,6 +191,7 @@ export default function App() {
 
         }
         {isMineOpen && <Minesweeper onClose={toggleMine}></Minesweeper>}
+        {isTerminalOpen && <Terminal onClose={toggleTerminal}></Terminal>}
       <AppBar
         style={{
           position: 'fixed',
