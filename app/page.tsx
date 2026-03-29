@@ -43,6 +43,7 @@ import Clock from '@/src/Components/Clock/Clock';
 import ClockApp from '@/src/Components/ClockApp/ClockApp';
 import Settings from '@/src/Components/Settings/Settings';
 import Contacts from '@/src/Components/Contacts/Contacts';
+import Minesweeper from '@/src/Components/Minesweeper/Minesweeper';
 
 const GlobalStyles = createGlobalStyle<{ wallpaper: string }>`
   ${styleReset}
@@ -119,21 +120,22 @@ const themeMap: Record<string, any> = {
 
 export default function App() {
   const [themeName, setThemeName] = useState('tokyoDark');
-  const [wallpaper, setWallpaper] = useState('/images/wallpapers/windows95setup4k.jpg');
+  const [wallpaper, setWallpaper] = useState('/images/wallpapers/Windows95setup4K.jpg');
 
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isClockOpen, setIsClockOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(true)
   const [isContactsOpen, setIsContactsOpen] = useState(false)
+  const [isMineOpen, setIsMineOpen] = useState(false)
 
   const toggleResume = () => setIsResumeOpen(!isResumeOpen);
   const closeResume = () => setIsResumeOpen(false);
   const toggleclock = () => setIsClockOpen(!isClockOpen)
   const toggleSettings = () => setIsSettingsOpen(!isSettingsOpen)
   const toggleContacts = () => setIsContactsOpen(!isContactsOpen)
-
   const toggleProjects = () => setIsProjectsOpen(!isProjectsOpen);
+  const toggleMine = () => setIsMineOpen(!isMineOpen)
   return (
     <ThemeProvider theme={themeMap[themeName]}>
       <GlobalStyles wallpaper={wallpaper} />
@@ -149,6 +151,7 @@ export default function App() {
       <AppIcon title='Clock' path='/images/clock.png' onDoubleClick={toggleclock} />
       <AppIcon title='Settings' path='/images/settings.png' onDoubleClick={toggleSettings}></AppIcon>
       <AppIcon title='Contacts' path='/images/contact.png' onDoubleClick={toggleContacts}></AppIcon>
+      <AppIcon title='Minesweeper' path='images/minesweeper.svg' onDoubleClick={toggleMine}></AppIcon>
 
 
 
@@ -183,6 +186,7 @@ export default function App() {
         {isContactsOpen && <Contacts onClose={() => setIsContactsOpen(false)}></Contacts>
 
         }
+        {isMineOpen && <Minesweeper onClose={toggleMine}></Minesweeper>}
       <AppBar
         style={{
           position: 'fixed',
