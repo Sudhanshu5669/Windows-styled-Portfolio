@@ -72,7 +72,7 @@ export default function Settings({
       try {
         const response = await fetch('/api/wallpapers');
         const data = await response.json();
-        setWallpapers([{ name: 'No wallpaper', path: '/images/wallpapers/Windows95setup4K.jpg' }, ...data]);
+        setWallpapers([{ name: 'No wallpaper', path: 'images/wallpapers/Windows95setup4K.jpg' }, ...data]);
       } catch (err) {
         console.error("Failed to load wallpapers", err);
         setWallpapers([
@@ -82,7 +82,7 @@ export default function Settings({
       }
     };
     fetchWallpapers();
-    // setWallpaper('images/wallpapers/Windows95setup4K.jpg');
+    setWallpaper('images/wallpapers/Windows95setup4K.jpg');
   }, []);
 
   const themeOptions = Object.keys(theme).map(key => ({
