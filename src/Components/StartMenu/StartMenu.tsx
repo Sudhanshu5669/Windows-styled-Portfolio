@@ -45,6 +45,19 @@ const SubMenuWrapper = styled.div`
   z-index: 10001;
 `;
 
+// A helper style to keep our list items cleanly aligned
+const MenuItemContent = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
+
+const MenuIcon = styled.span`
+  margin-right: 12px;
+  font-size: 20px;
+  line-height: 1; /* Prevents emojis from stretching the container height */
+`;
+
 // --- Interfaces ---
 
 interface StartMenuProps {
@@ -71,30 +84,31 @@ export default function StartMenu({ onLaunch, onShutDown, onRestart }: StartMenu
           style={{ position: 'relative' }}
         >
           <MenuListItem onClick={(e) => e.preventDefault()}>
-            <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-              <span style={{ marginRight: '12px', fontSize: '20px' }}>📁</span>
-              <u>P</u>rograms
+            <MenuItemContent>
+              <MenuIcon>📁</MenuIcon>
+              {/* Wrapping text in a span prevents flexbox from breaking it apart */}
+              <span><u>P</u>rograms</span>
               <span style={{ marginLeft: 'auto', fontSize: '10px' }}>▶</span>
-            </div>
+            </MenuItemContent>
           </MenuListItem>
           
           {activeSubMenu === 'programs' && (
             <SubMenuWrapper>
               <MenuList style={{ border: '2px solid', borderColor: '#dfdfdf #000000 #000000 #dfdfdf', boxShadow: '2px 2px 4px rgba(0,0,0,0.5)', minWidth: '180px' }}>
                 <MenuListItem onClick={() => onLaunch('internet')}>
-                  <span style={{ marginRight: '8px', fontSize: '16px' }}>🌍</span> Internet Explorer
+                  <MenuItemContent><MenuIcon style={{ fontSize: '16px', marginRight: '8px' }}>🌍</MenuIcon><span>Internet Explorer</span></MenuItemContent>
                 </MenuListItem>
                 <MenuListItem onClick={() => onLaunch('terminal')}>
-                  <span style={{ marginRight: '8px', fontSize: '16px' }}>💻</span> MS-DOS Prompt
+                  <MenuItemContent><MenuIcon style={{ fontSize: '16px', marginRight: '8px' }}>💻</MenuIcon><span>MS-DOS Prompt</span></MenuItemContent>
                 </MenuListItem>
                 <MenuListItem onClick={() => onLaunch('minesweeper')}>
-                  <span style={{ marginRight: '8px', fontSize: '16px' }}>💣</span> Minesweeper
+                  <MenuItemContent><MenuIcon style={{ fontSize: '16px', marginRight: '8px' }}>💣</MenuIcon><span>Minesweeper</span></MenuItemContent>
                 </MenuListItem>
                 <MenuListItem onClick={() => onLaunch('projects')}>
-                  <span style={{ marginRight: '8px', fontSize: '16px' }}>📂</span> Projects
+                  <MenuItemContent><MenuIcon style={{ fontSize: '16px', marginRight: '8px' }}>📂</MenuIcon><span>Projects</span></MenuItemContent>
                 </MenuListItem>
                 <MenuListItem onClick={() => onLaunch('clock')}>
-                  <span style={{ marginRight: '8px', fontSize: '16px' }}>🕰️</span> Clock
+                  <MenuItemContent><MenuIcon style={{ fontSize: '16px', marginRight: '8px' }}>🕰️</MenuIcon><span>Clock</span></MenuItemContent>
                 </MenuListItem>
               </MenuList>
             </SubMenuWrapper>
@@ -108,18 +122,18 @@ export default function StartMenu({ onLaunch, onShutDown, onRestart }: StartMenu
           style={{ position: 'relative' }}
         >
           <MenuListItem onClick={(e) => e.preventDefault()}>
-            <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-              <span style={{ marginRight: '12px', fontSize: '20px' }}>📄</span>
-              <u>D</u>ocuments
+            <MenuItemContent>
+              <MenuIcon>📄</MenuIcon>
+              <span><u>D</u>ocuments</span>
               <span style={{ marginLeft: 'auto', fontSize: '10px' }}>▶</span>
-            </div>
+            </MenuItemContent>
           </MenuListItem>
           
           {activeSubMenu === 'documents' && (
             <SubMenuWrapper>
               <MenuList style={{ border: '2px solid', borderColor: '#dfdfdf #000000 #000000 #dfdfdf', boxShadow: '2px 2px 4px rgba(0,0,0,0.5)', minWidth: '150px' }}>
                 <MenuListItem onClick={() => onLaunch('resume')}>
-                  <span style={{ marginRight: '8px', fontSize: '16px' }}>📝</span> resume.pdf
+                  <MenuItemContent><MenuIcon style={{ fontSize: '16px', marginRight: '8px' }}>📝</MenuIcon><span>resume.pdf</span></MenuItemContent>
                 </MenuListItem>
               </MenuList>
             </SubMenuWrapper>
@@ -127,21 +141,27 @@ export default function StartMenu({ onLaunch, onShutDown, onRestart }: StartMenu
         </div>
         
         <MenuListItem onClick={() => onLaunch('settings')}>
-          <span style={{ marginRight: '12px', fontSize: '20px' }}>⚙️</span>
-          <u>S</u>ettings
+          <MenuItemContent>
+            <MenuIcon>⚙️</MenuIcon>
+            <span><u>S</u>ettings</span>
+          </MenuItemContent>
         </MenuListItem>
 
         <Separator />
 
         {/* --- SYSTEM POWER CONTROLS --- */}
         <MenuListItem onClick={onRestart}>
-          <span style={{ marginRight: '12px', fontSize: '20px' }}>🔄</span>
-          <u>R</u>estart...
+          <MenuItemContent>
+            <MenuIcon>🔄</MenuIcon>
+            <span><u>R</u>estart...</span>
+          </MenuItemContent>
         </MenuListItem>
 
         <MenuListItem onClick={onShutDown}>
-          <span style={{ marginRight: '12px', fontSize: '20px' }}>🔌</span>
-          Sh<u>u</u>t Down...
+          <MenuItemContent>
+            <MenuIcon>🔌</MenuIcon>
+            <span>Sh<u>u</u>t Down...</span>
+          </MenuItemContent>
         </MenuListItem>
 
       </MenuList>

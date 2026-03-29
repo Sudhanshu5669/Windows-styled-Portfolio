@@ -48,6 +48,8 @@ import Terminal from '@/src/Components/Terminal/Terminal';
 
 // Import the Start Menu Component!
 import StartMenu from '@/src/Components/StartMenu/StartMenu';
+import Winamp from '@/src/Components/Winamp/Winamp';
+import LeetCode from '@/src/Components/Leetcode/Leetcode';
 
 const GlobalStyles = createGlobalStyle<{ wallpaper: string }>`
   ${styleReset}
@@ -122,6 +124,8 @@ export default function App() {
   const [isContactsOpen, setIsContactsOpen] = useState(false);
   const [isMineOpen, setIsMineOpen] = useState(false);
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+  const [isAmpOpen, setIsAmpOpen] = useState(false)
+  const [isLeetOpen, setIsLeetOpen] = useState(false)
 
   // System States
   const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
@@ -166,7 +170,8 @@ export default function App() {
   const toggleTerminal = () => setIsTerminalOpen(!isTerminalOpen);
   const toggleclock = () => setIsClockOpen(!isClockOpen);
   const toggleResume = () => setIsResumeOpen(!isResumeOpen);
-
+  const toggleAmp = () => setIsAmpOpen(!isAmpOpen)
+  const toggleLeet = () => setIsLeetOpen(!isLeetOpen)
   // THE SHUTDOWN SCREEN
   if (isShutDown) {
     return (
@@ -200,6 +205,8 @@ export default function App() {
         <AppIcon title='Contacts' path='/images/contact.png' onDoubleClick={toggleContacts} />
         <AppIcon title='Minesweeper' path='images/minesweeper.svg' onDoubleClick={toggleMine} />
         <AppIcon title='cmd' path='images/cmd2.png' onDoubleClick={toggleTerminal} />
+        <AppIcon title='Winamp' path='images/winamp.png' onDoubleClick={toggleAmp}></AppIcon>
+        <AppIcon title='Leetcode' path='images/leetcode.png' onDoubleClick={toggleLeet}></AppIcon>
       </Desktop>
 
       {/* RENDER WINDOWS */}
@@ -219,6 +226,8 @@ export default function App() {
       {isContactsOpen && <Contacts onClose={() => setIsContactsOpen(false)} />}
       {isMineOpen && <Minesweeper onClose={toggleMine} />}
       {isTerminalOpen && <Terminal onClose={toggleTerminal} />}
+      {isAmpOpen && <Winamp onClose={toggleAmp}></Winamp>}
+      {isLeetOpen && <LeetCode onClose={toggleLeet}></LeetCode>}
       
       {isSettingsOpen && (
         <Settings
