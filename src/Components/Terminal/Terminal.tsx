@@ -25,7 +25,7 @@ const COMMANDS: Record<string, string | string[]> = {
   skills: [
     "Languages: C++, Java, C, JavaScript, TypeScript, Python",
     "Frontend:  React, Next.js, React Native, Tailwind CSS",
-    "Backend:   Node.js, Express, PostgreSQL, MongoDB, Drizzle ORM",
+    "Backend:   Node.js, Next.js, Express, PostgreSQL, MongoDB, Drizzle ORM",
     "Tools:     Git, Docker, Vercel, LangChain"
   ],
   features: [

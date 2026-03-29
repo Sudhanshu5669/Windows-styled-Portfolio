@@ -344,7 +344,7 @@ export default function Contacts({ onClose }: InternetProps) {
                           </tr>
                           <tr>
                             <td style={{ border: 'none', verticalAlign: 'top' }}><b>Frameworks & Tech:</b></td>
-                            <td style={{ border: 'none' }}>LangChain, Node.js, Drizzle ORM, QDrant, Docker, React, React Native, Express, Flutter</td>
+                            <td style={{ border: 'none' }}>LangChain, Node.js, Next.js, Drizzle ORM, QDrant, Docker, React, React Native, Express, Flutter</td>
                           </tr>
                         </tbody>
                       </table>

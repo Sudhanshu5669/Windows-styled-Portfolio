@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AppBar, Button, styleReset, Window } from 'react95';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import Image from 'next/image';
@@ -46,6 +46,9 @@ import Contacts from '@/src/Components/Contacts/Contacts';
 import Minesweeper from '@/src/Components/Minesweeper/Minesweeper';
 import Terminal from '@/src/Components/Terminal/Terminal';
 
+// Import the Start Menu Component!
+import StartMenu from '@/src/Components/StartMenu/StartMenu';
+
 const GlobalStyles = createGlobalStyle<{ wallpaper: string }>`
   ${styleReset}
 
@@ -61,24 +64,16 @@ const GlobalStyles = createGlobalStyle<{ wallpaper: string }>`
   }
 
    html, body {
-
     margin: 0;
-
     padding: 0;
-
-    overflow: hidden; /* Prevents scrolling on the whole page */
-
+    overflow: hidden; 
     width: 100vw;
-
     height: 100vh;
-
-    position: fixed; /* Extra insurance against mobile rubber-banding */
-
+    position: fixed; 
   }
 
   body {
     font-family: 'ms_sans_serif';
-    /* This makes the wallpaper dynamic */
     background-image: url(${props => props.wallpaper});
     background-size: cover;
     background-position: center;
@@ -91,22 +86,19 @@ const GlobalStyles = createGlobalStyle<{ wallpaper: string }>`
 
 const Desktop = styled.div`
   display: grid;
-  /* Adjust 100px to fit your AppIcon size preference */
-  grid-template-columns: repeat(auto-fill, 100px);
-  grid-template-rows: repeat(auto-fill, 100px);
-  
-  /* The "Secret Sauce": stacks items top-to-bottom first */
+  grid-template-columns: repeat(auto-fill, 75px);
+  grid-template-rows: repeat(auto-fill, 75px);
   grid-auto-flow: column; 
-  
-  gap: 10px;
+  gap: 5px; 
   padding: 20px;
-  
-  /* Ensure it doesn't go behind the fixed AppBar */
   height: calc(100vh - 45px); 
   width: 100vw;
-
-  position: relative;
-  z-index: -1;
+  
+  /* THE FIX: Pin this to the background so it doesn't push windows down */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0; 
 `;
 
 const themeMap: Record<string, any> = {
@@ -118,111 +110,155 @@ const themeMap: Record<string, any> = {
   tokyoDark, travel, vaporTeal, vermillion, violetDark, water
 };
 
-
 export default function App() {
   const [themeName, setThemeName] = useState('tokyoDark');
   const [wallpaper, setWallpaper] = useState('/images/wallpapers/Windows95setup4K.jpg');
 
+  // App States
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
-  const [isClockOpen, setIsClockOpen] = useState(false)
-  const [isSettingsOpen, setIsSettingsOpen] = useState(true)
-  const [isContactsOpen, setIsContactsOpen] = useState(false)
-  const [isMineOpen, setIsMineOpen] = useState(false)
-  const [isTerminalOpen, setIsTerminalOpen] = useState(false)
+  const [isClockOpen, setIsClockOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(true);
+  const [isContactsOpen, setIsContactsOpen] = useState(false);
+  const [isMineOpen, setIsMineOpen] = useState(false);
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false);
 
-  const toggleResume = () => setIsResumeOpen(!isResumeOpen);
+  // System States
+  const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
+  const [isShutDown, setIsShutDown] = useState(false);
+  
+  const startMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close Start Menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (startMenuRef.current && !startMenuRef.current.contains(event.target as Node)) {
+        setIsStartMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Universal launch handler for the Start Menu
+  const handleLaunch = (appId: string) => {
+    if (appId === 'internet' || appId === 'contacts') setIsContactsOpen(true);
+    if (appId === 'terminal') setIsTerminalOpen(true);
+    if (appId === 'minesweeper') setIsMineOpen(true);
+    if (appId === 'projects') setIsProjectsOpen(true);
+    if (appId === 'clock') setIsClockOpen(true);
+    if (appId === 'resume') setIsResumeOpen(true);
+    if (appId === 'settings') setIsSettingsOpen(true);
+    
+    setIsStartMenuOpen(false); 
+  };
+
+  const handleRestart = () => {
+    window.location.reload();
+  };
+
+  // Icon Click Handlers
   const closeResume = () => setIsResumeOpen(false);
-  const toggleclock = () => setIsClockOpen(!isClockOpen)
-  const toggleSettings = () => setIsSettingsOpen(!isSettingsOpen)
-  const toggleContacts = () => setIsContactsOpen(!isContactsOpen)
+  const toggleSettings = () => setIsSettingsOpen(!isSettingsOpen);
+  const toggleContacts = () => setIsContactsOpen(!isContactsOpen);
   const toggleProjects = () => setIsProjectsOpen(!isProjectsOpen);
-  const toggleMine = () => setIsMineOpen(!isMineOpen)
-  const toggleTerminal = () => setIsTerminalOpen(!isTerminalOpen)
+  const toggleMine = () => setIsMineOpen(!isMineOpen);
+  const toggleTerminal = () => setIsTerminalOpen(!isTerminalOpen);
+  const toggleclock = () => setIsClockOpen(!isClockOpen);
+  const toggleResume = () => setIsResumeOpen(!isResumeOpen);
+
+  // THE SHUTDOWN SCREEN
+  if (isShutDown) {
+    return (
+      <ThemeProvider theme={themeMap[themeName]}>
+        <GlobalStyles wallpaper="" />
+        <div style={{ 
+          height: '100vh', width: '100vw', backgroundColor: 'black', 
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          color: '#ff8c00', fontFamily: "'ms_sans_serif', sans-serif", cursor: 'none' 
+        }}>
+          <h1 style={{ fontSize: '32px', marginBottom: '16px' }}>It is now safe to turn off your computer.</h1>
+          <p style={{ color: '#ff8c00', opacity: 0.5, cursor: 'pointer', fontSize: '12px' }} onClick={handleRestart}>
+            (Click here to reboot)
+          </p>
+        </div>
+      </ThemeProvider>
+    );
+  }
+
+  // NORMAL DESKTOP
   return (
     <ThemeProvider theme={themeMap[themeName]}>
       <GlobalStyles wallpaper={wallpaper} />
-      {/* ICONS GO HERE */}
-      <AppIcon
-        title='resume.pdf'
-        path='/images/text.png'
-        onDoubleClick={toggleResume}
-      />
+      
+      <Desktop onClick={() => setIsStartMenuOpen(false)}>
+        {/* ICONS GO HERE */}
+        <AppIcon title='resume.pdf' path='/images/text.png' onDoubleClick={toggleResume} />
+        <AppIcon title='Projects' path='/images/projects.png' onDoubleClick={toggleProjects} />
+        <AppIcon title='Clock' path='/images/clock.png' onDoubleClick={toggleclock} />
+        <AppIcon title='Settings' path='/images/settings.png' onDoubleClick={toggleSettings} />
+        <AppIcon title='Contacts' path='/images/contact.png' onDoubleClick={toggleContacts} />
+        <AppIcon title='Minesweeper' path='images/minesweeper.svg' onDoubleClick={toggleMine} />
+        <AppIcon title='cmd' path='images/cmd2.png' onDoubleClick={toggleTerminal} />
+      </Desktop>
 
-      {/* You can add more icons easily now; they will auto-align */}
-      <AppIcon title='Projects' path='/images/projects.png' onDoubleClick={toggleProjects} />
-      <AppIcon title='Clock' path='/images/clock.png' onDoubleClick={toggleclock} />
-      <AppIcon title='Settings' path='/images/settings.png' onDoubleClick={toggleSettings}></AppIcon>
-      <AppIcon title='Contacts' path='/images/contact.png' onDoubleClick={toggleContacts}></AppIcon>
-      <AppIcon title='Minesweeper' path='images/minesweeper.svg' onDoubleClick={toggleMine}></AppIcon>
-      <AppIcon title='cmd' path='images/cmd2.png' onDoubleClick={toggleTerminal}></AppIcon>
-
-
-
-      {/* 4. Only show WindowFrame if isResumeOpen is true */}
+      {/* RENDER WINDOWS */}
       {isResumeOpen && (
-        <WindowFrame
-          title="resume.exe"
-          pdfPath="/files/resume.pdf"
-          onClose={closeResume} // 5. Pass the close function
-        >
-          <iframe
-            src="/files/resume.pdf#toolbar=0"
-            width="100%"
-            height="100%"
-            style={{ border: 'none', height: '1000px' }}
+        <WindowFrame title="resume.exe" pdfPath="/files/resume.pdf" onClose={closeResume}>
+          <iframe 
+            src="/files/resume.pdf#toolbar=0" 
+            width="100%" 
+            height="100%" 
+            style={{ border: 'none', height: '1000px' }} 
           />
         </WindowFrame>
       )}
 
-
       {isProjectsOpen && <Projects onClose={() => setIsProjectsOpen(false)} />}
+      {isClockOpen && <ClockApp onClose={() => setIsClockOpen(false)} />}
+      {isContactsOpen && <Contacts onClose={() => setIsContactsOpen(false)} />}
+      {isMineOpen && <Minesweeper onClose={toggleMine} />}
+      {isTerminalOpen && <Terminal onClose={toggleTerminal} />}
+      
+      {isSettingsOpen && (
+        <Settings
+          onClose={() => setIsSettingsOpen(false)}
+          currentTheme={themeName}
+          setTheme={setThemeName}
+          theme={themeMap}
+          currentWallpaper={wallpaper}
+          setWallpaper={setWallpaper}
+        />
+      )}
+      
+      {/* TASKBAR */}
+      <AppBar style={{ position: 'fixed', top: 'auto', bottom: 0, left: 0, padding: '1px', display: 'flex', flexDirection: 'row', width: '100%', zIndex: 9999 }}>
+        
+        {/* Added display: flex and relative positioning here so the menu anchors correctly */}
+        <div ref={startMenuRef} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+          
+          {isStartMenuOpen && (
+            <StartMenu 
+              onLaunch={handleLaunch} 
+              onShutDown={() => setIsShutDown(true)} 
+              onRestart={handleRestart} 
+            />
+          )}
 
-      {isClockOpen && <ClockApp onClose={() => setIsClockOpen(false)}></ClockApp>}
-      {isSettingsOpen && <Settings
-        onClose={() => setIsSettingsOpen(false)}
-        currentTheme={themeName}
-        setTheme={setThemeName}
-        theme={themeMap}
-        currentWallpaper={wallpaper}
-        setWallpaper={setWallpaper}
-        ></Settings>}
-        {isContactsOpen && <Contacts onClose={() => setIsContactsOpen(false)}></Contacts>
-
-        }
-        {isMineOpen && <Minesweeper onClose={toggleMine}></Minesweeper>}
-        {isTerminalOpen && <Terminal onClose={toggleTerminal}></Terminal>}
-      <AppBar
-        style={{
-          position: 'fixed',
-          top: 'auto',
-          bottom: 0,
-          left: 0,
-          // ----------------------------
-          padding: '1px',
-          display: 'flex',
-          flexDirection: 'row',
-          width: '100%',
-        }}
-      >
-        <Button
-          variant="default"
-          size="sm"
-          style={{
-            width: '100px',
-            margin: '2px',
-            display: 'flex',
-            gap: '6px'
-          }}
-        >
-          <img
-            src="/images/windows95.png"
-            alt="start"
-            width={32}
-            height={32}
-          />
-          Start
-        </Button>
+          <Button
+            variant="default"
+            size="sm"
+            active={isStartMenuOpen}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsStartMenuOpen(!isStartMenuOpen);
+            }}
+            style={{ width: '100px', margin: '2px', display: 'flex', gap: '6px', fontWeight: isStartMenuOpen ? 'bold' : 'normal' }}
+          >
+            <img src="/images/windows95.png" alt="start" width={20} height={20} />
+            Start
+          </Button>
+        </div>
 
         <div style={{ marginLeft: 'auto' }} />
         <Clock />
