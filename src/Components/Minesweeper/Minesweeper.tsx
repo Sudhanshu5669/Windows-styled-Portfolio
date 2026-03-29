@@ -269,16 +269,18 @@ export default function Minesweeper({ onClose }: MinesweeperProps) {
   };
 
   const getSmiley = () => {
-    if (status === 'lost') return '😵';
-    if (status === 'won') return '😎';
-    return '🙂';
+    if (status === 'lost') return <img src={'images/mine_dead.png'}/>;
+    if (status === 'won') return <img src={'images/mine_smug.png'}/>;
+    return <img src={'images/mine_smiley.png'}/>;
   };
 
   return (
     <Draggable nodeRef={nodeRef} handle=".window-header" bounds="parent">
       <Window ref={nodeRef} style={{ width: 'auto', position: 'absolute', top: '15%', left: '40%', zIndex: 100 }}>
         <WindowHeader className="window-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span>💣 Minesweeper</span>
+            <img src={'images/minesweeper.svg'} alt='Minesweeper' width={20} 
+          height={20}/>
+          <span>Minesweeper</span>
           <Button onClick={onClose}><span style={{ fontWeight: 'bold' }}>x</span></Button>
         </WindowHeader>
         
@@ -309,7 +311,7 @@ export default function Minesweeper({ onClose }: MinesweeperProps) {
                       >
                         {/* Note: Flags and Bombs will render based on the user's OS emoji style. */}
                         {!cell.isRevealed && cell.isFlagged && <span style={{ fontSize: '12px' }}>🚩</span>}
-                        {cell.isRevealed && cell.isMine && !cell.isFlagged && <span style={{ fontSize: '12px' }}>💣</span>}
+                        {cell.isRevealed && cell.isMine && !cell.isFlagged && <span style={{ fontSize: '12px' }}><img src={'images/minesweeper.svg'}></img></span>}
                         {cell.isRevealed && !cell.isMine && cell.neighborMines > 0 && (
                           <span style={{ color: getNumberColor(cell.neighborMines) }}>
                             {cell.neighborMines}
