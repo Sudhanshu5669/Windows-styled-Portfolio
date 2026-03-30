@@ -50,6 +50,7 @@ import Terminal from '@/src/Components/Terminal/Terminal';
 import StartMenu from '@/src/Components/StartMenu/StartMenu';
 import Winamp from '@/src/Components/Winamp/Winamp';
 import LeetCode from '@/src/Components/Leetcode/Leetcode';
+import About from '@/src/Components/About/About';
 
 const GlobalStyles = createGlobalStyle<{ wallpaper: string }>`
   ${styleReset}
@@ -113,19 +114,20 @@ const themeMap: Record<string, any> = {
 };
 
 export default function App() {
-  const [themeName, setThemeName] = useState('tokyoDark');
+  const [themeName, setThemeName] = useState('original');
   const [wallpaper, setWallpaper] = useState('/images/wallpapers/Windows95setup4K.jpg');
 
   // App States
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isClockOpen, setIsClockOpen] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(true);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isContactsOpen, setIsContactsOpen] = useState(false);
   const [isMineOpen, setIsMineOpen] = useState(false);
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const [isAmpOpen, setIsAmpOpen] = useState(false)
   const [isLeetOpen, setIsLeetOpen] = useState(false)
+  const [isAboutOpen, setIsAboutOpen] = useState(false)
 
   // System States
   const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
@@ -172,6 +174,7 @@ export default function App() {
   const toggleResume = () => setIsResumeOpen(!isResumeOpen);
   const toggleAmp = () => setIsAmpOpen(!isAmpOpen)
   const toggleLeet = () => setIsLeetOpen(!isLeetOpen)
+  const toggleAbout = () => setIsAboutOpen(!isAboutOpen)
   // THE SHUTDOWN SCREEN
   if (isShutDown) {
     return (
@@ -198,7 +201,7 @@ export default function App() {
       
       <Desktop onClick={() => setIsStartMenuOpen(false)}>
         {/* ICONS GO HERE */}
-        <AppIcon title='resume.pdf' path='/images/text.png' onDoubleClick={toggleResume} />
+        <AppIcon title='resume.pdf' path='/images/Notepad95.svg' onDoubleClick={toggleResume} />
         <AppIcon title='Projects' path='/images/projects.png' onDoubleClick={toggleProjects} />
         <AppIcon title='Clock' path='/images/clock.png' onDoubleClick={toggleclock} />
         <AppIcon title='Settings' path='/images/settings.png' onDoubleClick={toggleSettings} />
@@ -207,6 +210,7 @@ export default function App() {
         <AppIcon title='cmd' path='images/cmd2.png' onDoubleClick={toggleTerminal} />
         <AppIcon title='Winamp' path='images/winamp.png' onDoubleClick={toggleAmp}></AppIcon>
         <AppIcon title='Leetcode' path='images/leetcode.png' onDoubleClick={toggleLeet}></AppIcon>
+        <AppIcon title='About.txt' path='images/Notepad95.svg' onDoubleClick={toggleAbout}></AppIcon>
       </Desktop>
 
       {/* RENDER WINDOWS */}
@@ -228,6 +232,7 @@ export default function App() {
       {isTerminalOpen && <Terminal onClose={toggleTerminal} />}
       {isAmpOpen && <Winamp onClose={toggleAmp}></Winamp>}
       {isLeetOpen && <LeetCode onClose={toggleLeet}></LeetCode>}
+      {isAboutOpen && <About onClose={toggleAbout}></About>}
       
       {isSettingsOpen && (
         <Settings
