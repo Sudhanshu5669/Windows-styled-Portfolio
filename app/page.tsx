@@ -51,6 +51,7 @@ import StartMenu from '@/src/Components/StartMenu/StartMenu';
 import Winamp from '@/src/Components/Winamp/Winamp';
 import LeetCode from '@/src/Components/Leetcode/Leetcode';
 import About from '@/src/Components/About/About';
+import FullscreenPrompt from '@/src/Components/FullScreenPrompt/FullScreenPrompt';
 
 const GlobalStyles = createGlobalStyle<{ wallpaper: string }>`
   ${styleReset}
@@ -212,6 +213,7 @@ export default function App() {
         <AppIcon title='Leetcode' path='images/leetcode.png' onDoubleClick={toggleLeet}></AppIcon>
         <AppIcon title='About.txt' path='images/Notepad95.svg' onDoubleClick={toggleAbout}></AppIcon>
       </Desktop>
+      <FullscreenPrompt></FullscreenPrompt>
 
       {/* RENDER WINDOWS */}
       {isResumeOpen && (
